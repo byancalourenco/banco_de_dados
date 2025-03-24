@@ -1,0 +1,110 @@
+-- Geração de Modelo físico
+-- Sql ANSI 2003 - brModelo.
+
+
+
+CREATE TABLE curso (
+cod_curso Texto(1) PRIMARY KEY,
+data_fim datetime,
+descricao varchar(300),
+data_inicio datetime,
+duracao varchar(20),
+carga_horaria varchar(50),
+valor deciamal(3,2),
+nome varchar(255),
+nivel int,
+modalidade varchar(255),
+num_vagas int
+)
+
+CREATE TABLE turmas (
+cod_turma int PRIMARY KEY,
+nivel int,
+horarios varchar(100),
+dia_da_semana varchar(100),
+num_vagas int,
+localizacao varchar(255),
+lista_de_alunos varchar(500),
+num_alunos int,
+data_fim datetime,
+data_inicio datetime,
+cod_curso Texto(1),
+FOREIGN KEY(cod_curso) REFERENCES curso (cod_curso)
+)
+
+CREATE TABLE disciplinas (
+cod_disciplina int PRIMARY KEY,
+ementa varchar(255),
+num_turmas int,
+prof_responsavel varchar(255),
+materiais varchar(255),
+carga_horaria varchar(255),
+nome varchar(255),
+descricao varchar(500),
+cod_professor int
+)
+
+CREATE TABLE alunos (
+cod_aluno int PRIMARY KEY,
+data_matricula date,
+email varchar(255),
+turma varchar(20),
+curso varchar(255),
+telefone varchar(20),
+sexo varchar(10),
+cpf varchar(100),
+rg varchar(100),
+historico_escolar varchar(1000),
+faltas int,
+desempenho varchar(500),
+notas varchar(255),
+data_nascimento date,
+nome varchar(255),
+cod_turma int,
+FOREIGN KEY(cod_turma) REFERENCES turmas (cod_turma)
+)
+
+CREATE TABLE responsavel  (
+cod_responsavel int PRIMARY KEY,
+nome varchar(255),
+data_nascimento date,
+telefone varchar(50),
+email varchar(255),
+cpf varchar(100),
+rg varchar(100),
+relacao_com_aluno varchar(255)
+)
+
+CREATE TABLE professor (
+cod_professor int PRIMARY KEY,
+nome varchar(255),
+data_nascimento date,
+rg Texto(1),
+cpf varchar(100),
+tipo_escala varchar(100,
+experiencia_profissional varchar(255),
+horarios varchar(10),
+cursos_ministrados varchar(255),
+data_contratacao date,
+email varchar(255),
+telefone varchar(20),
+salario decimal(5,2),
+formacao varchar(255),
+especializacao varchar(255)
+)
+
+CREATE TABLE possui (
+cod_disciplina int,
+cod_curso Texto(1),
+FOREIGN KEY(cod_disciplina) REFERENCES disciplinas (cod_disciplina),
+FOREIGN KEY(cod_curso) REFERENCES curso (cod_curso)
+)
+
+CREATE TABLE vinculado (
+cod_responsavel int,
+cod_aluno int,
+FOREIGN KEY(cod_responsavel) REFERENCES responsavel  (cod_responsavel),
+FOREIGN KEY(cod_aluno) REFERENCES alunos (cod_aluno)
+)
+
+ALTER TABLE disciplinas ADD FOREIGN KEY(cod_professor) REFERENCES professor (cod_professor)
