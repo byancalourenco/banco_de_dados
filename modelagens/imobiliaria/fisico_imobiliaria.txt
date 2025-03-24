@@ -1,0 +1,105 @@
+-- Geração de Modelo físico
+-- Sql ANSI 2003 - brModelo.
+
+
+
+CREATE TABLE proprietario (
+cod_proprietario int PRIMARY KEY,
+nome varchar(255),
+cpf int,
+rg int,
+sobrenome varchar(255),
+data_nascimento date,
+telefone varchar(100),
+email varchar(255),
+data_cadastro date,
+cod_corretor int
+)
+
+CREATE TABLE corretor (
+cod_corretor int PRIMARY KEY,
+data_nascimento date,
+rg int,
+nome varchar(255),
+especialidade varchar(255),
+cpf int,
+tipo_contrato varchar(255),
+telefone varchar(100),
+email varchar(255),
+cod_endereco int
+)
+
+CREATE TABLE imovel (
+cod_imovel int PRIMARY KEY,
+tipo varchar(255),
+preco varchar(255),
+num_quartos int,
+num_banheiros int,
+andares int,
+num_vagas int,
+area varchar(255),
+data_construcao date,
+status varchar(100),
+descricao varchar(300),
+comodos varchar(255),
+cod_proprietario int,
+cod_endereco int,
+FOREIGN KEY(cod_proprietario) REFERENCES proprietario (cod_proprietario)
+)
+
+CREATE TABLE inquilino (
+cod_inquilino int PRIMARY KEY,
+nome varchar(255),
+cpf int,
+rg int,
+data_inicio_locacao date,
+telefone varchar(255),
+email varchar(255),
+status_pagamento varchar(100),
+data_fim_locacao date,
+num_contrato int,
+comprovante_renda varchar(255),
+renovacao_contrato varchar(255),
+data_nascimento date,
+valor_aluguel varchar(255),
+cod_corretor int,
+cod_fiador Texto(1),
+FOREIGN KEY(cod_corretor) REFERENCES corretor (cod_corretor)
+)
+
+CREATE TABLE endereco (
+cod_endereco int PRIMARY KEY,
+rua varchar(255),
+cep int,
+bairro varchar(255),
+num varchar(100),
+complemento varchar(255),
+cidade varchar(255),
+uf char(2)
+)
+
+CREATE TABLE fiador (
+cod_fiador Texto(1) PRIMARY KEY,
+nome varchar(255),
+telefone varchar(100),
+cpf int,
+rg int,
+email varchar(255),
+relacionamento_inquilino varchar(255),
+seguro_fianca varchar(255),
+data_nascimento date,
+data_assinatura date,
+garantia varchar(255)
+)
+
+CREATE TABLE aluga (
+cod_inquilino int,
+cod_imovel int,
+FOREIGN KEY(cod_inquilino) REFERENCES inquilino (cod_inquilino),
+FOREIGN KEY(cod_imovel) REFERENCES imovel (cod_imovel)
+)
+
+ALTER TABLE proprietario ADD FOREIGN KEY(cod_corretor) REFERENCES corretor (cod_corretor)
+ALTER TABLE corretor ADD FOREIGN KEY(cod_endereco) REFERENCES endereco (cod_endereco)
+ALTER TABLE imovel ADD FOREIGN KEY(cod_endereco) REFERENCES endereco (cod_endereco)
+ALTER TABLE inquilino ADD FOREIGN KEY(cod_fiador) REFERENCES fiador (cod_fiador)
