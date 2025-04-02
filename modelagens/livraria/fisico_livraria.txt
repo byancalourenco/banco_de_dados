@@ -1,0 +1,75 @@
+-- Geração de Modelo físico
+-- Sql ANSI 2003 - brModelo.
+
+
+
+CREATE TABLE livro (
+cod_livro int,
+isbn int,
+data_publicacao date,
+genero varchar(100),
+qtde_estoque int,
+sinopse varchar(400),
+nome varchar(255),
+preco decimal(5,2),
+cod_autor int,
+PRIMARY KEY(cod_livro,data_publicacao)
+)
+
+CREATE TABLE venda (
+cod_venda int PRIMARY KEY,
+forma_pagamento varchar(100),
+valor_total varchar(10,2),
+data_venda date,
+cod_cliente int,
+cod_funcionario int
+)
+
+CREATE TABLE cliente (
+cod_cliente int PRIMARY KEY,
+data_nascimento date,
+nome varchar(255),
+email varchar(255),
+ativo varchar(10),
+cod_endereco int,
+cod_funcionario int
+)
+
+CREATE TABLE autor (
+cod_autor int PRIMARY KEY,
+nome varchar(255)
+)
+
+CREATE TABLE endereco (
+cod_endereco int PRIMARY KEY,
+rua varchar(255),
+cep int,
+cidade varchar(255),
+numero int,
+bairro varchar(255),
+complemento varchar(255)
+)
+
+CREATE TABLE funcionario (
+cod_funcionario int PRIMARY KEY,
+nome varchar(255),
+email varchar(255),
+carga_horaria varchar(255),
+salario decimal(10,2)
+)
+
+CREATE TABLE itens_venda (
+valor_item decimal(5,2),
+qtde int,
+cod_venda int,
+cod_livro int,
+data_publicacao date,
+FOREIGN KEY(cod_venda) REFERENCES venda (cod_venda),
+FOREIGN KEY(data_publicacao,,) REFERENCES livro (cod_livro,data_publicacao)
+)
+
+ALTER TABLE livro ADD FOREIGN KEY(cod_autor) REFERENCES autor (cod_autor)
+ALTER TABLE venda ADD FOREIGN KEY(cod_cliente) REFERENCES cliente (cod_cliente)
+ALTER TABLE venda ADD FOREIGN KEY(cod_funcionario) REFERENCES funcionario (cod_funcionario)
+ALTER TABLE cliente ADD FOREIGN KEY(cod_endereco) REFERENCES endereco (cod_endereco)
+ALTER TABLE cliente ADD FOREIGN KEY(cod_funcionario) REFERENCES funcionario (cod_funcionario)
